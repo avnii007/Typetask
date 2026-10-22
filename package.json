@@ -8,5 +8,17 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avnii007/Typetask.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/avnii007/Typetask/issues"
+  },
+  "homepage": "https://github.com/avnii007/Typetask#readme"
 }
