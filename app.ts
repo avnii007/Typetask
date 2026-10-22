@@ -1,0 +1,46 @@
+import { Task, TaskStatus, addTask, advanceTask, filterByStatus } from "./model.js";
+let tasks: Task[] = [];
+let currentFilter: "all" | TaskStatus = "all";
+// Type-cast DOM elements
+const titleInput = document.getElementById("title") as HTMLInputElement;
+const addBtn = document.getElementById("add") as HTMLButtonElement;
+const listEl = document.getElementById("list") as HTMLUListElement;
+const filterBtns = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+// Handle Add Task
+addBtn.onclick = () => {
+  const title = titleInput.value.trim();
+  if (!title) return;
+  tasks = addTask(tasks, title);
+  titleInput.value = "";
+  render();
+};
+// Handle Filters
+filterBtns.forEach((btn) => {
+  btn.onclick = () => {
+    // Handling null fallback for getAttribute
+    const status = (btn.getAttribute("data-status") ?? "all") as "all" | TaskStatus;
+    currentFilter = status;
+    render();
+  };
+});
+// Render UI based on state
+function render() {
+  listEl.innerHTML = "";
+  const filteredTasks = filterByStatus(tasks, currentFilter);
+  filteredTasks.forEach((task) => {
+    const li = document.createElement("li");
+    li.className = "task";
+    const textSpan = document.createElement("span");
+    // Template literal backticks added correctly
+    textSpan.textContent = ${task.title} [${task.status}];
+    const advanceBtn = document.createElement("button");
+    advanceBtn.textContent = "Advance →";
+    advanceBtn.onclick = () => {
+      tasks = advanceTask(tasks, task.id); // Call model function to change status
+      render();
+    };
+    li.appendChild(textSpan);
+    li.appendChild(advanceBtn);
+    listEl.appendChild(li);
+  });
+}
